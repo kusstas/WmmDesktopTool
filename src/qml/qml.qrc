@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>DeviceConnectionBar.qml</file>
+        <file>DeviceControlTools.qml</file>
+        <file>LogContainer.qml</file>
+        <file>LogInfoElement.qml</file>
+        <file>WmmMessageDialog.qml</file>
+    </qresource>
+</RCC>
