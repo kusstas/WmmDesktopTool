@@ -16,6 +16,8 @@ public:
 
     Device* device() const;
 
+    Q_INVOKABLE void openUrl(QUrl const& url);
+
 signals:
     void showMessage(QString const& title, QString const& message);
 

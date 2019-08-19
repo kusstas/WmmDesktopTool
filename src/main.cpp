@@ -2,13 +2,15 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QQuickStyle>
+#include <QStandardPaths>
+#include <QDir>
 
 #include "QmlFacade.h"
 #include "Device.h"
 
 int main(int argc, char *argv[])
 {
-    QCoreApplication::setApplicationName("Wmm Desktop Tool");
+    QCoreApplication::setApplicationName("WmmDesktopTool");
     QCoreApplication::setOrganizationName("Svarmed");
     QCoreApplication::setOrganizationDomain("com.svarmed.wmm");
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -30,8 +32,27 @@ int main(int argc, char *argv[])
         }
     }, Qt::QueuedConnection);
 
-    engine.rootContext()->setContextProperty("defaultLogDir",
-                                             QGuiApplication::applicationDirPath());
+    QStringList docDirs = QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation);
+    QStringList downDirs = QStandardPaths::standardLocations(QStandardPaths::DownloadLocation);
+    if (!docDirs.isEmpty())
+    {
+        QDir docDir(docDirs.first());
+        docDir.mkdir(QCoreApplication::applicationName());
+        engine.rootContext()->setContextProperty("defaultLogDir",
+                                                 docDir.filePath(QCoreApplication::applicationName()));
+    }
+    else if (!downDirs.isEmpty())
+    {
+        QDir downDir(downDirs.first());
+        downDir.mkdir(QCoreApplication::applicationName());
+        engine.rootContext()->setContextProperty("defaultLogDir",
+                                                 downDir.filePath(QCoreApplication::applicationName()));
+    }
+    else
+    {
+        engine.rootContext()->setContextProperty("defaultLogDir", "");
+    }
+
     engine.rootContext()->setContextProperty("facade", &facade);
     engine.load(url);
 

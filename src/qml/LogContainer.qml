@@ -105,6 +105,14 @@ ColumnLayout {
                 folderDialog.open()
             }
         }
+
+        Button {
+            text: qsTr("Show")
+
+            onClicked: {
+                facade.openUrl(folderField.text)
+            }
+        }
     }
 
     RowLayout {

@@ -2,6 +2,7 @@
 #include "Device.h"
 
 #include <QDebug>
+#include <QDesktopServices>
 
 QmlFacade::QmlFacade(QObject* parent)
     : QObject(parent)
@@ -22,4 +23,9 @@ QmlFacade::~QmlFacade()
 Device* QmlFacade::device() const
 {
     return m_device;
+}
+
+void QmlFacade::openUrl(QUrl const& url)
+{
+    QDesktopServices::openUrl(url);
 }
