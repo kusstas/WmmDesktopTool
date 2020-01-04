@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>Footer.qml</file>
+        <file>Tabs.qml</file>
+        <file>Settings.qml</file>
+        <file>UserPreferences.qml</file>
+    </qresource>
+</RCC>

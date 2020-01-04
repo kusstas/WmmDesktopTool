@@ -1,15 +1,16 @@
 QT += quick serialport quickcontrols2
-CONFIG += c++14
+
+CONFIG += c++17
 
 DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
-        src/Device.cpp \
-        src/LogInfoProxy.cpp \
-        src/QmlFacade.cpp \
-        src/main.cpp
+        Device.cpp \
+        DeviceQmlProxies.cpp \
+        DevicesMonitor.cpp \
+        main.cpp
 
-RESOURCES += src/qml/qml.qrc
+RESOURCES += qml.qrc
 
 QML_IMPORT_PATH =
 QML_DESIGNER_IMPORT_PATH =
@@ -19,6 +20,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    src/Device.h \
-    src/LogInfoProxy.h \
-    src/QmlFacade.h
+    Device.h \
+    DeviceCommon.h \
+    DeviceQmlProxies.h \
+    DevicesMonitor.h
