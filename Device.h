@@ -68,10 +68,11 @@ private:
     bool sendCommand(Command command, QByteArray data = {});
     void resetReceive();
 
-    QByteArray waitResponse();
+    QByteArray waitResponse(int timeout = 1000);
 
 private:
     bool m_connected = false;
+    bool m_tryConnect = false;
     QString m_portName = "";
     SettingsQmlProxy* m_settings = nullptr;
     UserPreferencesQmlProxy* m_userPreferences= nullptr;

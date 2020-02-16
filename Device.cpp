@@ -1,6 +1,7 @@
 #include "Device.h"
 
 #include <QEventLoop>
+#include <QTimer>
 
 Device::Device(QObject* parent)
     : QObject(parent)
@@ -43,10 +44,27 @@ QDateTime Device::dateTime() const
 
 bool Device::open()
 {
+    if (m_tryConnect || m_connected)
+    {
+        return false;
+    }
+
+    m_tryConnect = true;
     m_serial.setPortName(portName());
     bool success = m_serial.open(QSerialPort::ReadWrite);
 
+    if (success)
+    {
+        success = readAll();
+
+        if (!success)
+        {
+            m_serial.close();
+        }
+    }
+
     setConnected(success);
+    m_tryConnect = false;
 
     return success;
 }
@@ -60,6 +78,7 @@ bool Device::close()
 
 void Device::clear()
 {
+    m_serial.clear();
     setDateTime({});
     setSettings(nullptr);
     setUserPreferences(nullptr);
@@ -253,15 +272,6 @@ void Device::setConnected(bool connected)
     if (m_connected == connected)
         return;
 
-    if (connected)
-    {
-        readAll();
-    }
-    else
-    {
-        clear();
-    }
-
     m_connected = connected;
     emit connectedChanged(m_connected);
 }
@@ -301,6 +311,7 @@ void Device::setUserPreferences(UserPreferencesQmlProxy* userPreferences)
 void Device::onAboutToClose()
 {
     setConnected(false);
+    clear();
 }
 
 void Device::onReadyRead()
@@ -373,15 +384,21 @@ void Device::resetReceive()
     m_responseBuffer.clear();
 }
 
-QByteArray Device::waitResponse()
+QByteArray Device::waitResponse(int timeout)
 {
     QEventLoop loop;
+    QTimer timer;
+    timer.setInterval(timeout);
+    timer.setSingleShot(true);
 
+    connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit);
     connect(this, &Device::responseComplete, &loop, &QEventLoop::quit);
     connect(this, &Device::responseError, &loop, &QEventLoop::quit);
 
     m_waitResponse = true;
+    timer.start();
     loop.exec();
+    timer.stop();
     m_waitResponse = false;
 
     auto tmp = m_responseBuffer;

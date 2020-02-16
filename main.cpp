@@ -5,12 +5,13 @@
 
 #include "Device.h"
 #include "DevicesMonitor.h"
+#include "DeviceQmlProxies.h"
 
 
 int main(int argc, char *argv[])
 {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    QQuickStyle::setStyle("Material");
+    QQuickStyle::setStyle("Universal");
 
     QGuiApplication app(argc, argv);
     DevicesMonitor deviceMonitor;

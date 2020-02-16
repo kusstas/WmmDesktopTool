@@ -1,16 +1,16 @@
 import QtQuick 2.0
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
-import QtQuick.Controls.Material 2.12
+import QtQuick.Controls.Universal 2.12
 
 Item {
     id: root
 
-    readonly property color selectedColor: Material.accentColor
-    readonly property color defaultColor: Material.background
+    readonly property color selectedColor: Universal.accentColor
+    readonly property color defaultColor: Universal.background
 
-    readonly property color selectedTextColor: Material.background
-    readonly property color defaultTextColor: Material.accentColor
+    readonly property color selectedTextColor: Universal.background
+    readonly property color defaultTextColor: Universal.accentColor
 
     readonly property int settingsIndex: 0
     readonly property int userPreferencesIndex: 1
@@ -33,7 +33,7 @@ Item {
                 anchors.centerIn: parent
                 text: qsTr("Settings")
                 color: isSettingsSelected ? selectedTextColor : defaultTextColor
-                font.pointSize: 12
+                font.pointSize: 11
             }
 
             MouseArea {
@@ -51,7 +51,7 @@ Item {
                 anchors.centerIn: parent
                 text: qsTr("User Preferences")
                 color: userPreferencesSelected ? selectedTextColor : defaultTextColor
-                font.pointSize: 12
+                font.pointSize: 11
             }
 
             MouseArea {
@@ -66,6 +66,6 @@ Item {
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
-        color: Material.accentColor
+        color: Universal.accentColor
     }
 }
